@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.asianpaint.customer;
-
 /**
  *
  * @author Mathuragini
@@ -17,8 +11,7 @@ public class Customer {
     private int tpNumber;
     private String address;
     private String email;
-    
-    
+      
     //Create parametrized constructor for customer class
     public Customer(int customerId, String customerName, String address, int tpNumber, String email) {
         this.customerId = customerId;
@@ -27,7 +20,6 @@ public class Customer {
         this.address = address;
         this.email = email;
     }
-
     //Generate getters for the customer class varaiables
     public int getCustomerId() {
         return customerId;
