@@ -30,10 +30,7 @@ public void refresh(){
     jTxt_pid.setText("");
     jTxt_pName.setText("");
      jTxt_pDes.setText("");
-    
   
-   
-   
 }
 
 // get a list of Product from mysql database
