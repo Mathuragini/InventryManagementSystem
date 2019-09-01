@@ -1,4 +1,3 @@
-
 package com.asianpaint.login;
 
 import com.asianpaint.homepage.CachierHomePage;
@@ -11,19 +10,17 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 public class SignInForm extends javax.swing.JFrame {
-    
-    //Get the connection by calling connection class    
-     Connection connection = DbConnection.dbconnect();        //connecting system with database
-     PreparedStatement ps;   
-     Statement st;
-     ResultSet rs;
 
-    
+    //Get the connection by calling connection class    
+    Connection connection = DbConnection.dbconnect();        //connecting system with database
+    PreparedStatement ps;
+    Statement st;
+    ResultSet rs;
+
     public SignInForm() {
         initComponents();
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -186,54 +183,55 @@ public class SignInForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancel_btnActionPerformed
 
     private void jButton_signInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_signInActionPerformed
-       String uname = jTxt_uname.getText();
-       String pword = jPass_pass.getText();
-       String option = jCombo_role.getSelectedItem().toString();
-       
-       if (uname.equals("")|| pword.equals("")||option.equals("SELECT")){
-           JOptionPane.showMessageDialog(rootPane, "Some Fields are empty" ,"Eror",1);
-       }else {
-           try{
-               ps = connection.prepareStatement("SELECT * FROM asianpaint.user where username =? and pword =?");
-               ps.setString(1, uname);
-               ps.setString(2, pword);
-               rs= ps.executeQuery();
-               
-               if (rs.next()){
-                   
-                   String role = rs.getString("role");
-                   if(option.equalsIgnoreCase("Manager") && role.equalsIgnoreCase("Manager") ){
-                       ManagerHomePageForm mhp = new ManagerHomePageForm();
-                       mhp.setVisible(true);
-                       setVisible(false);
-                   }if(option.equalsIgnoreCase("StockKeeper")&& role.equalsIgnoreCase("StockKeeper") ){
-                       StockKeeperForm skf = new StockKeeperForm();
+        String uname = jTxt_uname.getText();
+        String pword = jPass_pass.getText();
+        String option = jCombo_role.getSelectedItem().toString();
+
+        if (uname.equals("") || pword.equals("") || option.equals("SELECT")) {
+            JOptionPane.showMessageDialog(rootPane, "Some Fields are empty", "Eror", 1);
+        } else {
+            try {
+                ps = connection.prepareStatement("SELECT * FROM asianpaint.user where username =? and pword =?");
+                ps.setString(1, uname);
+                ps.setString(2, pword);
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+
+                    String role = rs.getString("role");
+                    if (option.equalsIgnoreCase("Manager") && role.equalsIgnoreCase("Manager")) {
+                        ManagerHomePageForm mhp = new ManagerHomePageForm();
+                        mhp.setVisible(true);
+                        setVisible(false);
+                    }
+                    if (option.equalsIgnoreCase("StockKeeper") && role.equalsIgnoreCase("StockKeeper")) {
+                        StockKeeperForm skf = new StockKeeperForm();
                         skf.setVisible(true);
-                       setVisible(false);
-                   }if(option.equalsIgnoreCase("Cashier")&& role.equalsIgnoreCase("Cashier") ){
-                       CachierHomePage chp = new CachierHomePage();
+                        setVisible(false);
+                    }
+                    if (option.equalsIgnoreCase("Cashier") && role.equalsIgnoreCase("Cashier")) {
+                        CachierHomePage chp = new CachierHomePage();
                         chp.setVisible(true);
-                       setVisible(false);
-                   }
-                   
-               }else {
-                    JOptionPane.showMessageDialog(rootPane, "Username or Password not matched" ,"Login Eror",1);
-               }
-               
-       }catch(Exception e){
-           System.out.print(e);
-       }
+                        setVisible(false);
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Username or Password not matched", "Login Eror", 1);
+                }
+
+            } catch (Exception e) {
+                System.out.print(e);
+            }
     }//GEN-LAST:event_jButton_signInActionPerformed
     }
     private void jButton_signUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_signUpActionPerformed
         SignUpForm signUp = new SignUpForm();
         signUp.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton_signUpActionPerformed
 
-    
     public static void main(String args[]) {
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SignInForm().setVisible(true);

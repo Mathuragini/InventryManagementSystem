@@ -1,4 +1,3 @@
-
 package com.asianpaint.customer;
 
 import com.asianpaint.login.DbConnection;
@@ -16,100 +15,86 @@ import javax.swing.table.TableModel;
  * @author Mathuragini
  */
 public class CustomerForm extends javax.swing.JFrame {
-  //Get the connection by calling connection class    
-     Connection connection = DbConnection.dbconnect();        //connecting system with database
-     PreparedStatement ps;   
-     Statement st;
-     ResultSet rs;
-        
-      
+    //Get the connection by calling connection class    
+
+    Connection connection = DbConnection.dbconnect();        //connecting system with database
+    PreparedStatement ps;
+    Statement st;
+    ResultSet rs;
+
     public CustomerForm() {
         initComponents();
         Show_Customer_In_JTable();
     }
-  
-
 
 //Method to clear the textfield         
-public void refresh(){
-    jTxt_cusId.setText("");
-    jTxt_cusName.setText("");
-     jTxt_cusAddress.setText("");
-      jTxt_cusTP.setText("");
-    jTxt_cusMail.setText("");
-   
-   
-}
+    public void refresh() {
+        jTxt_cusId.setText("");
+        jTxt_cusName.setText("");
+        jTxt_cusAddress.setText("");
+        jTxt_cusTP.setText("");
+        jTxt_cusMail.setText("");
+
+    }
 
 // get a list of Customer from mysql database
-public ArrayList<Customer> getUsersList()
-   {
-       ArrayList<Customer> customerList = new ArrayList<Customer>();
-      
-       
-       String query = "SELECT * FROM  `customer` ";
-      
-       
-       try {
-           st = connection.createStatement();
-           rs = st.executeQuery(query);
+    public ArrayList<Customer> getUsersList() {
+        ArrayList<Customer> customerList = new ArrayList<Customer>();
 
-           Customer customer;
+        String query = "SELECT * FROM  `customer` ";
 
-           while(rs.next())
-           {
-   customer = new Customer(rs.getInt("id"),rs.getString("cus_name"),rs.getString("cus_address"),rs.getInt("cus_tp"),rs.getString("cus_mail") );
-               customerList.add(customer);
-           }
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(query);
 
-       } 
-      catch (Exception e) {
-           e.printStackTrace();
-       }
-       return customerList;
-   }
-    
+            Customer customer;
+
+            while (rs.next()) {
+                customer = new Customer(rs.getInt("id"), rs.getString("cus_name"), rs.getString("cus_address"), rs.getInt("cus_tp"), rs.getString("cus_mail"));
+                customerList.add(customer);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return customerList;
+    }
 
 // Display Data In JTable
-   
-   public void Show_Customer_In_JTable()
-   {
-       ArrayList<Customer> list = getUsersList();
-       DefaultTableModel model = (DefaultTableModel)jTable_customer.getModel();
-       Object[] row = new Object[5];
-       for(int i = 0; i < list.size(); i++)
-       {
-           row[0] = list.get(i).getCustomerId();
-           row[1] = list.get(i).getCustomerName();
-           row[2] = list.get(i).getAddress();
-           row[3] = list.get(i).getTpNumber();
-           row[4] = list.get(i).getEmail();
-           
-           model.addRow(row);
-       }
+    public void Show_Customer_In_JTable() {
+        ArrayList<Customer> list = getUsersList();
+        DefaultTableModel model = (DefaultTableModel) jTable_customer.getModel();
+        Object[] row = new Object[5];
+        for (int i = 0; i < list.size(); i++) {
+            row[0] = list.get(i).getCustomerId();
+            row[1] = list.get(i).getCustomerName();
+            row[2] = list.get(i).getAddress();
+            row[3] = list.get(i).getTpNumber();
+            row[4] = list.get(i).getEmail();
+
+            model.addRow(row);
+        }
     }
-   
-   public void executeSQlQuery(String query, String message)
-   {
- 
-       try{
-           st = connection.createStatement();
-           if((st.executeUpdate(query)) == 1)
-           {
-               // refresh jtable data
-               DefaultTableModel model = (DefaultTableModel)jTable_customer.getModel();
-               model.setRowCount(0);
-               Show_Customer_In_JTable();
-               
-               JOptionPane.showMessageDialog(null, "Data "+message+" Succefully");
-           }else{
-               JOptionPane.showMessageDialog(null, "Data Not "+message);
-           }
-       }catch(Exception ex){
-           ex.printStackTrace();
-       }
-   }
-   
+
+    public void executeSQlQuery(String query, String message) {
+
+        try {
+            st = connection.createStatement();
+            if ((st.executeUpdate(query)) == 1) {
+                // refresh jtable data
+                DefaultTableModel model = (DefaultTableModel) jTable_customer.getModel();
+                model.setRowCount(0);
+                Show_Customer_In_JTable();
+
+                JOptionPane.showMessageDialog(null, "Data " + message + " Succefully");
+            } else {
+                JOptionPane.showMessageDialog(null, "Data Not " + message);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -334,52 +319,49 @@ public ArrayList<Customer> getUsersList()
     }//GEN-LAST:event_jTxt_cusMailActionPerformed
 
     private void cus_add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cus_add_btnActionPerformed
-  //add customer deatils
-        String query = "INSERT INTO `customer`(`cus_name`, `cus_address`, `cus_tp`,`cus_mail`) VALUES ('"+jTxt_cusName.getText()+"','"+jTxt_cusAddress.getText()+"',"+jTxt_cusTP.getText()+",'"+jTxt_cusMail.getText()+"')";
-        
+        //add customer deatils
+        String query = "INSERT INTO `customer`(`cus_name`, `cus_address`, `cus_tp`,`cus_mail`) VALUES ('" + jTxt_cusName.getText() + "','" + jTxt_cusAddress.getText() + "'," + jTxt_cusTP.getText() + ",'" + jTxt_cusMail.getText() + "')";
+
         executeSQlQuery(query, "Inserted");
         refresh();
     }//GEN-LAST:event_cus_add_btnActionPerformed
 
     private void jTable_customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_customerMouseClicked
-       // Get The Index Of The Slected Row 
+        // Get The Index Of The Slected Row 
         int i = jTable_customer.getSelectedRow();
 
         TableModel model = jTable_customer.getModel();
-        
-         // Display Slected Row In JTexteFields
-         jTxt_cusId.setText(model.getValueAt(i,0).toString());
-        jTxt_cusName.setText(model.getValueAt(i,1).toString());
 
-        jTxt_cusAddress.setText(model.getValueAt(i,2).toString());
+        // Display Slected Row In JTexteFields
+        jTxt_cusId.setText(model.getValueAt(i, 0).toString());
+        jTxt_cusName.setText(model.getValueAt(i, 1).toString());
 
-        jTxt_cusTP.setText(model.getValueAt(i,3).toString());
+        jTxt_cusAddress.setText(model.getValueAt(i, 2).toString());
 
-       jTxt_cusMail .setText(model.getValueAt(i,4).toString());
-        
-        
-       
+        jTxt_cusTP.setText(model.getValueAt(i, 3).toString());
+
+        jTxt_cusMail.setText(model.getValueAt(i, 4).toString());
+
+
     }//GEN-LAST:event_jTable_customerMouseClicked
 
     private void cus_edit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cus_edit_btnActionPerformed
-        String query = "UPDATE `customer` SET `cus_name`='"+jTxt_cusName.getText()+"',`cus_address`='"+jTxt_cusAddress.getText()+"',`cus_tp`="+jTxt_cusTP.getText()+" ,`cus_mail`='"+jTxt_cusMail.getText()+"' WHERE `id` = "+jTxt_cusId.getText();
-       executeSQlQuery(query, "Updated");
+        String query = "UPDATE `customer` SET `cus_name`='" + jTxt_cusName.getText() + "',`cus_address`='" + jTxt_cusAddress.getText() + "',`cus_tp`=" + jTxt_cusTP.getText() + " ,`cus_mail`='" + jTxt_cusMail.getText() + "' WHERE `id` = " + jTxt_cusId.getText();
+        executeSQlQuery(query, "Updated");
     }//GEN-LAST:event_cus_edit_btnActionPerformed
 
     private void cus_delt_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cus_delt_btnActionPerformed
-       String query = "DELETE FROM `customer` WHERE id = "+jTxt_cusId.getText();
-         executeSQlQuery(query, "Deleted");
-         refresh();
+        String query = "DELETE FROM `customer` WHERE id = " + jTxt_cusId.getText();
+        executeSQlQuery(query, "Deleted");
+        refresh();
     }//GEN-LAST:event_cus_delt_btnActionPerformed
 
-   
     public static void main(String args[]) {
-       
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CustomerForm().setVisible(true);
-                
-                
+
             }
         });
     }

@@ -1,4 +1,3 @@
-
 package com.asianpaint.customer;
 
 import com.asianpaint.login.DbConnection;
@@ -12,93 +11,86 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-
 public class UserForm extends javax.swing.JFrame {
+
     //Get the connection by calling connection class    
-     Connection connection = DbConnection.dbconnect();        //connecting system with database
-     PreparedStatement ps;   
-     Statement st;
-     ResultSet rs;
+    Connection connection = DbConnection.dbconnect();        //connecting system with database
+    PreparedStatement ps;
+    Statement st;
+    ResultSet rs;
 
     public UserForm() {
         initComponents();
         Show_User_In_JTable();
     }
-public void refresh(){
-    jTxt_user_id.setText("");
-    jTxt_user_name.setText("");
-     jTxt_user_pass.setText("");
-     jTxt_user_tp.setText("");
-     jTxt_user_mail.setText("");
-  
-}
-public ArrayList<User> getUserList()
-   {
-       ArrayList<User>userList = new ArrayList<User>();
-      
-       
-       String query = "SELECT * FROM asianpaint.user ";
-      
-       
-       try {
-           st = connection.createStatement();
-           rs = st.executeQuery(query);
 
-           User user;
+    public void refresh() {
+        jTxt_user_id.setText("");
+        jTxt_user_name.setText("");
+        jTxt_user_pass.setText("");
+        jTxt_user_tp.setText("");
+        jTxt_user_mail.setText("");
 
-           while(rs.next())
-           {
-   user = new User(rs.getInt("id"),rs.getString("username"),rs.getString("pword"),rs.getString("mail"),rs.getInt("tp"),rs.getString("role"));
-               userList.add(user);
-           }
-
-       } 
-      catch (Exception e) {
-           e.printStackTrace();
-       }
-       return userList;
-   }
-
-// Display Data In JTable
-   
-   public void Show_User_In_JTable()
-   {
-       ArrayList<User> list = getUserList();
-       DefaultTableModel model = (DefaultTableModel)jTable_user_details.getModel();
-       Object[] row = new Object[6];
-       for(int i = 0; i < list.size(); i++)
-       {
-           row[0] = list.get(i).getUserId();
-           row[1] = list.get(i).getUsername();
-           row[2] = list.get(i).getPassword();
-           row[3] = list.get(i).getMail();
-           row[4] = list.get(i).getTp();
-           row[5] = list.get(i).getRole();
-           
-           model.addRow(row);
-       }
     }
 
-public void executeSQlQuery(String query, String message)
-   {
- 
-       try{
-           st = connection.createStatement();
-           if((st.executeUpdate(query)) == 1)
-           {
-               // refresh jtable data
-               DefaultTableModel model = (DefaultTableModel)jTable_user_details.getModel();
-               model.setRowCount(0);
-               Show_User_In_JTable();
-               
-               JOptionPane.showMessageDialog(null, "Data "+message+" Succefully");
-           }else{
-               JOptionPane.showMessageDialog(null, "Data Not "+message);
-           }
-       }catch(Exception ex){
-           ex.printStackTrace();
-       }
-   }
+    public ArrayList<User> getUserList() {
+        ArrayList<User> userList = new ArrayList<User>();
+
+        String query = "SELECT * FROM asianpaint.user ";
+
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(query);
+
+            User user;
+
+            while (rs.next()) {
+                user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("pword"), rs.getString("mail"), rs.getInt("tp"), rs.getString("role"));
+                userList.add(user);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+// Display Data In JTable
+    public void Show_User_In_JTable() {
+        ArrayList<User> list = getUserList();
+        DefaultTableModel model = (DefaultTableModel) jTable_user_details.getModel();
+        Object[] row = new Object[6];
+        for (int i = 0; i < list.size(); i++) {
+            row[0] = list.get(i).getUserId();
+            row[1] = list.get(i).getUsername();
+            row[2] = list.get(i).getPassword();
+            row[3] = list.get(i).getMail();
+            row[4] = list.get(i).getTp();
+            row[5] = list.get(i).getRole();
+
+            model.addRow(row);
+        }
+    }
+
+    public void executeSQlQuery(String query, String message) {
+
+        try {
+            st = connection.createStatement();
+            if ((st.executeUpdate(query)) == 1) {
+                // refresh jtable data
+                DefaultTableModel model = (DefaultTableModel) jTable_user_details.getModel();
+                model.setRowCount(0);
+                Show_User_In_JTable();
+
+                JOptionPane.showMessageDialog(null, "Data " + message + " Succefully");
+            } else {
+                JOptionPane.showMessageDialog(null, "Data Not " + message);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -345,11 +337,11 @@ public void executeSQlQuery(String query, String message)
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTxt_user_tpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxt_user_tpActionPerformed
-       
+
     }//GEN-LAST:event_jTxt_user_tpActionPerformed
 
     private void user_delt_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_delt_btnActionPerformed
-        String query = "DELETE FROM `user` WHERE id = "+jTxt_user_id.getText();
+        String query = "DELETE FROM `user` WHERE id = " + jTxt_user_id.getText();
         executeSQlQuery(query, "Deleted");
         refresh();
     }//GEN-LAST:event_user_delt_btnActionPerformed
@@ -359,7 +351,7 @@ public void executeSQlQuery(String query, String message)
     }//GEN-LAST:event_user_clr_btnActionPerformed
 
     private void user_edit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_edit_btnActionPerformed
-        String query = "UPDATE `user` SET `username`='"+jTxt_user_name.getText()+"',`pword`='"+jTxt_user_pass.getText()+"',`mail`='"+jTxt_user_mail.getText()+"',`tp`="+jTxt_user_tp.getText()+",`role`='"+jCombo_user_role.getSelectedItem().toString()+"' WHERE `id` = "+jTxt_user_id.getText();
+        String query = "UPDATE `user` SET `username`='" + jTxt_user_name.getText() + "',`pword`='" + jTxt_user_pass.getText() + "',`mail`='" + jTxt_user_mail.getText() + "',`tp`=" + jTxt_user_tp.getText() + ",`role`='" + jCombo_user_role.getSelectedItem().toString() + "' WHERE `id` = " + jTxt_user_id.getText();
         executeSQlQuery(query, "Updated");
     }//GEN-LAST:event_user_edit_btnActionPerformed
 
@@ -368,20 +360,19 @@ public void executeSQlQuery(String query, String message)
         int i = jTable_user_details.getSelectedRow();
 
         TableModel model = jTable_user_details.getModel();
-        
-         // Display Slected Row In JTexteFields
-         jTxt_user_id.setText(model.getValueAt(i,0).toString());
-        jTxt_user_name.setText(model.getValueAt(i,1).toString());
 
-        jTxt_user_pass.setText(model.getValueAt(i,2).toString());
-         jTxt_user_mail.setText(model.getValueAt(i,3).toString());
-          jTxt_user_tp.setText(model.getValueAt(i,4).toString());
+        // Display Slected Row In JTexteFields
+        jTxt_user_id.setText(model.getValueAt(i, 0).toString());
+        jTxt_user_name.setText(model.getValueAt(i, 1).toString());
 
-        jCombo_user_role.setSelectedItem( model.getValueAt(i,5).toString());
-       
+        jTxt_user_pass.setText(model.getValueAt(i, 2).toString());
+        jTxt_user_mail.setText(model.getValueAt(i, 3).toString());
+        jTxt_user_tp.setText(model.getValueAt(i, 4).toString());
+
+        jCombo_user_role.setSelectedItem(model.getValueAt(i, 5).toString());
+
     }//GEN-LAST:event_jTable_user_detailsMouseClicked
 
-    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

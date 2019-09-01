@@ -1,4 +1,3 @@
-
 package com.asianpaint.customer;
 
 /**
@@ -6,7 +5,7 @@ package com.asianpaint.customer;
  * @author Mathuragini
  */
 public class User {
-    
+
     private int userId;
     private String username;
     private String password;
@@ -46,7 +45,5 @@ public class User {
     public String getRole() {
         return role;
     }
-    
-    
-    
+
 }

@@ -1,20 +1,16 @@
-
 package com.asianpaint.stocks;
 
 public class ItemForm extends javax.swing.JFrame {
 
-    
     public ItemForm() {
         initComponents();
     }
-    
-    void refresh(){
+
+    void refresh() {
         jTxt_itm_id.setText("");
-                                 
-       
+
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -267,19 +263,19 @@ public class ItemForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTxt_itm_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxt_itm_idActionPerformed
-      
+
     }//GEN-LAST:event_jTxt_itm_idActionPerformed
 
     private void jTxt_prod_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxt_prod_idActionPerformed
-        
+
     }//GEN-LAST:event_jTxt_prod_idActionPerformed
 
     private void item_add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_add_btnActionPerformed
-        
+
     }//GEN-LAST:event_item_add_btnActionPerformed
 
     private void item_delt_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_delt_btnActionPerformed
-        
+
     }//GEN-LAST:event_item_delt_btnActionPerformed
 
     private void item_clr_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_clr_btnActionPerformed
@@ -287,10 +283,9 @@ public class ItemForm extends javax.swing.JFrame {
     }//GEN-LAST:event_item_clr_btnActionPerformed
 
     private void item_edit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_edit_btnActionPerformed
-       
+
     }//GEN-LAST:event_item_edit_btnActionPerformed
 
-   
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

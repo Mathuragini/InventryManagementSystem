@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.asianpaint.stocks;
 
 import java.sql.Date;
@@ -12,6 +7,7 @@ import java.sql.Date;
  * @author Mathuragini
  */
 public class Stock {
+
     private int stockId;
     private String type;
     private int itemId;
@@ -45,7 +41,5 @@ public class Stock {
     public Date getUpdatedDate() {
         return updatedDate;
     }
-    
-    
-    
+
 }

@@ -1,4 +1,3 @@
-
 package com.asianpaint.login;
 
 import java.sql.Connection;
@@ -6,43 +5,42 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 public class SignUpForm extends javax.swing.JFrame {
 
     //Get the connection by calling connection class    
-     Connection connection = DbConnection.dbconnect();        //connecting system with database
-     PreparedStatement ps;   
-     Statement st;
-     ResultSet rs;
-   
+    Connection connection = DbConnection.dbconnect();        //connecting system with database
+    PreparedStatement ps;
+    Statement st;
+    ResultSet rs;
+
     public SignUpForm() {
         initComponents();
     }
-  public void refresh(){
-      jTxt_uname.setText("");
-      jPassword_pass.setText("");
-      jTxt_mail.setText("");
-      jTxt_tp1.setText("");
-  
- }
-   
-  public void executeSQlQuery(String query, String message)
-   {
- 
-       try{
-           st = connection.createStatement();
-           if((st.executeUpdate(query)) == 1)
-           {
-               
-               JOptionPane.showMessageDialog(null, "Data "+message+" Succefully");
-           }else{
-               JOptionPane.showMessageDialog(null, "Data Not "+message);
-           }
-       }catch(Exception ex){
-           ex.printStackTrace();
-       }
-   }
+
+    public void refresh() {
+        jTxt_uname.setText("");
+        jPassword_pass.setText("");
+        jTxt_mail.setText("");
+        jTxt_tp1.setText("");
+
+    }
+
+    public void executeSQlQuery(String query, String message) {
+
+        try {
+            st = connection.createStatement();
+            if ((st.executeUpdate(query)) == 1) {
+
+                JOptionPane.showMessageDialog(null, "Data " + message + " Succefully");
+            } else {
+                JOptionPane.showMessageDialog(null, "Data Not " + message);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -206,15 +204,14 @@ public class SignUpForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_cancelActionPerformed
 
     private void jButton_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_registerActionPerformed
-        String query = "INSERT INTO `user`(`username`, `pword`, `mail`,`tp`,`role`) VALUES ('"+jTxt_uname.getText()+"','"+jPassword_pass.getText()+"','"+jTxt_mail.getText().toString()+"',"+jTxt_tp1.getText().toString()+",'"+jCombo_role.getSelectedItem().toString()+"')";
+        String query = "INSERT INTO `user`(`username`, `pword`, `mail`,`tp`,`role`) VALUES ('" + jTxt_uname.getText() + "','" + jPassword_pass.getText() + "','" + jTxt_mail.getText().toString() + "'," + jTxt_tp1.getText().toString() + ",'" + jCombo_role.getSelectedItem().toString() + "')";
         executeSQlQuery(query, "Inserted");
         refresh();
-         setVisible(false);
+        setVisible(false);
     }//GEN-LAST:event_jButton_registerActionPerformed
 
-   
     public static void main(String args[]) {
-       
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SignUpForm().setVisible(true);

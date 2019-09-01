@@ -1,4 +1,3 @@
-
 package com.asianpaint.stocks;
 
 import com.asianpaint.customer.Customer;
@@ -13,93 +12,83 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public class ProductForm extends javax.swing.JFrame {
-    
+
     //Get the connection by calling connection class    
-     Connection connection = DbConnection.dbconnect();        //connecting system with database
-     PreparedStatement ps;   
-     Statement st;
-     ResultSet rs;
+    Connection connection = DbConnection.dbconnect();        //connecting system with database
+    PreparedStatement ps;
+    Statement st;
+    ResultSet rs;
 
     public ProductForm() {
         initComponents();
         Show_Product_In_JTable();
     }
-    
+
     //Method to clear the textfield         
-public void refresh(){
-    jTxt_pid.setText("");
-    jTxt_pName.setText("");
-     jTxt_pDes.setText("");
-  
-}
+    public void refresh() {
+        jTxt_pid.setText("");
+        jTxt_pName.setText("");
+        jTxt_pDes.setText("");
+
+    }
 
 // get a list of Product from mysql database
-public ArrayList<Product> getProductList()
-   {
-       ArrayList<Product> ProductList = new ArrayList<Product>();
-      
-       
-       String query = "SELECT * FROM  `product` ";
-      
-       
-       try {
-           st = connection.createStatement();
-           rs = st.executeQuery(query);
+    public ArrayList<Product> getProductList() {
+        ArrayList<Product> ProductList = new ArrayList<Product>();
 
-           Product product;
+        String query = "SELECT * FROM  `product` ";
 
-           while(rs.next())
-           {
-   product = new Product(rs.getInt("productId"),rs.getString("name"),rs.getString("description"),rs.getString("applyTo"));
-               ProductList.add(product);
-           }
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(query);
 
-       } 
-      catch (Exception e) {
-           e.printStackTrace();
-       }
-       return ProductList;
-   }
+            Product product;
+
+            while (rs.next()) {
+                product = new Product(rs.getInt("productId"), rs.getString("name"), rs.getString("description"), rs.getString("applyTo"));
+                ProductList.add(product);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ProductList;
+    }
 
 // Display Data In JTable
-   
-   public void Show_Product_In_JTable()
-   {
-       ArrayList<Product> list = getProductList();
-       DefaultTableModel model = (DefaultTableModel)jTable_product_table.getModel();
-       Object[] row = new Object[4];
-       for(int i = 0; i < list.size(); i++)
-       {
-           row[0] = list.get(i).getProductId();
-           row[1] = list.get(i).getName();
-           row[2] = list.get(i).getDescription();
-           row[3] = list.get(i).getApplyTo();
-           
-           model.addRow(row);
-       }
+    public void Show_Product_In_JTable() {
+        ArrayList<Product> list = getProductList();
+        DefaultTableModel model = (DefaultTableModel) jTable_product_table.getModel();
+        Object[] row = new Object[4];
+        for (int i = 0; i < list.size(); i++) {
+            row[0] = list.get(i).getProductId();
+            row[1] = list.get(i).getName();
+            row[2] = list.get(i).getDescription();
+            row[3] = list.get(i).getApplyTo();
+
+            model.addRow(row);
+        }
     }
-   
-    public void executeSQlQuery(String query, String message)
-   {
- 
-       try{
-           st = connection.createStatement();
-           if((st.executeUpdate(query)) == 1)
-           {
-               // refresh jtable data
-               DefaultTableModel model = (DefaultTableModel)jTable_product_table.getModel();
-               model.setRowCount(0);
-               Show_Product_In_JTable();
-               
-               JOptionPane.showMessageDialog(null, "Data "+message+" Succefully");
-           }else{
-               JOptionPane.showMessageDialog(null, "Data Not "+message);
-           }
-       }catch(Exception ex){
-           ex.printStackTrace();
-       }
-   }
-   
+
+    public void executeSQlQuery(String query, String message) {
+
+        try {
+            st = connection.createStatement();
+            if ((st.executeUpdate(query)) == 1) {
+                // refresh jtable data
+                DefaultTableModel model = (DefaultTableModel) jTable_product_table.getModel();
+                model.setRowCount(0);
+                Show_Product_In_JTable();
+
+                JOptionPane.showMessageDialog(null, "Data " + message + " Succefully");
+            } else {
+                JOptionPane.showMessageDialog(null, "Data Not " + message);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -306,20 +295,20 @@ public ArrayList<Product> getProductList()
 
     private void product_add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_add_btnActionPerformed
         //add customer deatils
-        String query = "INSERT INTO `product`(`name`, `description`, `applyTo`) VALUES ('"+jTxt_pName.getText()+"','"+jTxt_pDes.getText()+"','"+jCombo_pApply.getSelectedItem().toString()+"')";
+        String query = "INSERT INTO `product`(`name`, `description`, `applyTo`) VALUES ('" + jTxt_pName.getText() + "','" + jTxt_pDes.getText() + "','" + jCombo_pApply.getSelectedItem().toString() + "')";
 
         executeSQlQuery(query, "Inserted");
         refresh();
     }//GEN-LAST:event_product_add_btnActionPerformed
 
     private void product_delt_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_delt_btnActionPerformed
-        String query = "DELETE FROM `product` WHERE productId = "+jTxt_pid.getText();
+        String query = "DELETE FROM `product` WHERE productId = " + jTxt_pid.getText();
         executeSQlQuery(query, "Deleted");
         refresh();
     }//GEN-LAST:event_product_delt_btnActionPerformed
 
     private void product_edit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_edit_btnActionPerformed
-        String query = "UPDATE `product` SET `name`='"+jTxt_pName.getText()+"',`description`='"+jTxt_pDes.getText()+"',`applyTo`='"+jCombo_pApply.getSelectedItem().toString()+"' WHERE `productId` = "+jTxt_pid.getText();
+        String query = "UPDATE `product` SET `name`='" + jTxt_pName.getText() + "',`description`='" + jTxt_pDes.getText() + "',`applyTo`='" + jCombo_pApply.getSelectedItem().toString() + "' WHERE `productId` = " + jTxt_pid.getText();
         executeSQlQuery(query, "Updated");
     }//GEN-LAST:event_product_edit_btnActionPerformed
 
@@ -332,17 +321,16 @@ public ArrayList<Product> getProductList()
         int i = jTable_product_table.getSelectedRow();
 
         TableModel model = jTable_product_table.getModel();
-        
-         // Display Slected Row In JTexteFields
-         jTxt_pid.setText(model.getValueAt(i,0).toString());
-        jTxt_pName.setText(model.getValueAt(i,1).toString());
 
-        jTxt_pDes.setText(model.getValueAt(i,2).toString());
+        // Display Slected Row In JTexteFields
+        jTxt_pid.setText(model.getValueAt(i, 0).toString());
+        jTxt_pName.setText(model.getValueAt(i, 1).toString());
 
-        jCombo_pApply.setSelectedItem( model.getValueAt(i,3).toString());
-       
+        jTxt_pDes.setText(model.getValueAt(i, 2).toString());
 
-      
+        jCombo_pApply.setSelectedItem(model.getValueAt(i, 3).toString());
+
+
     }//GEN-LAST:event_jTable_product_tableMouseClicked
 
     public static void main(String args[]) {

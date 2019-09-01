@@ -1,17 +1,18 @@
 package com.asianpaint.customer;
+
 /**
  *
  * @author Mathuragini
  */
 public class Customer {
-    
+
     //Declare varaiables for customer class
     private int customerId;
     private String customerName;
     private int tpNumber;
     private String address;
     private String email;
-      
+
     //Create parametrized constructor for customer class
     public Customer(int customerId, String customerName, String address, int tpNumber, String email) {
         this.customerId = customerId;
@@ -20,6 +21,7 @@ public class Customer {
         this.address = address;
         this.email = email;
     }
+
     //Generate getters for the customer class varaiables
     public int getCustomerId() {
         return customerId;
@@ -40,6 +42,5 @@ public class Customer {
     public String getEmail() {
         return email;
     }
-    
-    
+
 }

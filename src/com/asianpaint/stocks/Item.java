@@ -5,7 +5,7 @@ package com.asianpaint.stocks;
  * @author Mathuragini
  */
 public class Item {
-    
+
     private int itemId;
     private int productId;
     private String itemName;
@@ -63,6 +63,5 @@ public class Item {
     public String getWarranty() {
         return warranty;
     }
-    
-    
+
 }
