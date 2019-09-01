@@ -202,7 +202,6 @@ public class SignInForm extends javax.swing.JFrame {
                if (rs.next()){
                    
                    String role = rs.getString("role");
-                  // String un = rs.getString("username");
                    if(option.equalsIgnoreCase("Manager") && role.equalsIgnoreCase("Manager") ){
                        ManagerHomePageForm mhp = new ManagerHomePageForm();
                        mhp.setVisible(true);
