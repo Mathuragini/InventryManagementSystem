@@ -1,14 +1,101 @@
 package com.asianpaint.stocks;
 
+import com.asianpaint.login.DbConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 public class ItemForm extends javax.swing.JFrame {
+
+    //Get the connection by calling connection class    
+    Connection connection = DbConnection.dbconnect();        //connecting system with database
+    PreparedStatement ps;
+    Statement st;
+    ResultSet rs;
 
     public ItemForm() {
         initComponents();
+        Show_Item_In_JTable();
     }
 
     void refresh() {
         jTxt_itm_id.setText("");
+        jTxt_itm_name.setText("");
+        jTxt_itm_price.setText("");
+        jTxt_itm_shade.setText("");
+        jTxt_itm_warranty.setText("");
+        jTxt_itm_finish.setText("");
 
+    }
+// get a list of Item from mysql database
+
+    public ArrayList<Item> getItemList() {
+        ArrayList<Item> itemList = new ArrayList<Item>();
+
+        String query = "SELECT * FROM  `item` ";
+ 
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(query);
+
+            Item item;
+
+            while (rs.next()) {
+                item = new Item(rs.getInt("itemId"), rs.getString("producName"), rs.getString("itemName"), rs.getInt("priceRange"), rs.getString("finish"), rs.getInt("washability"), rs.getString("shadeRange"), rs.getString("warranty"));
+                itemList.add(item);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return itemList;
+    }
+
+    // Display Data In JTable
+    public void Show_Item_In_JTable() {
+        ArrayList<Item> list = getItemList();
+        DefaultTableModel model = (DefaultTableModel) jTable_item_details.getModel();
+        Object[] row = new Object[8];
+        for (int i = 0; i < list.size(); i++) {
+            row[0] = list.get(i).getItemId();
+            row[1] = list.get(i).getProductName();
+            row[2] = list.get(i).getItemName();
+            row[3] = list.get(i).getPriceRange();
+            row[4] = list.get(i).getFinish();
+            row[5] = list.get(i).getWashability();
+            row[6] = list.get(i).getShadeRange();
+            row[7] = list.get(i).getWarranty();
+
+            model.addRow(row);
+        }
+    }
+
+    //execute query 
+    public void executeSQlQuery(String query, String message) {
+
+        try {
+            st = connection.createStatement();
+            if ((st.executeUpdate(query)) == 1) {
+                // refresh jtable data
+                DefaultTableModel model = (DefaultTableModel) jTable_item_details.getModel();
+                model.setRowCount(0);
+                Show_Item_In_JTable();
+
+                JOptionPane.showMessageDialog(null, "Data " + message + " Succefully");
+            } else {
+                JOptionPane.showMessageDialog(null, "Data Not " + message);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -29,14 +116,14 @@ public class ItemForm extends javax.swing.JFrame {
         jTxt_itm_shade = new javax.swing.JTextField();
         jTxt_itm_warranty = new javax.swing.JTextField();
         jTxt_itm_finish = new javax.swing.JTextField();
-        jTxt_itm_wash = new javax.swing.JTextField();
         jTxt_itm_price = new javax.swing.JTextField();
         jTxt_itm_name = new javax.swing.JTextField();
         jTxt_itm_id = new javax.swing.JTextField();
         jCombo_itm_proName = new javax.swing.JComboBox<>();
+        jSpinner_itm_wash = new javax.swing.JSpinner();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable_item_details = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         item_edit_btn = new javax.swing.JButton();
         item_clr_btn = new javax.swing.JButton();
@@ -65,9 +152,17 @@ public class ItemForm extends javax.swing.JFrame {
 
         jLabel10.setText("Shade Range");
 
+        jTxt_itm_id.setEditable(false);
         jTxt_itm_id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTxt_itm_idActionPerformed(evt);
+            }
+        });
+
+        jCombo_itm_proName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "select " }));
+        jCombo_itm_proName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCombo_itm_proNameActionPerformed(evt);
             }
         });
 
@@ -78,32 +173,36 @@ public class ItemForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel3)
+                    .addComponent(jTxt_itm_price, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTxt_itm_name, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel4))
-                        .addGap(2, 2, 2))
-                    .addComponent(jLabel2))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(44, 44, 44)
-                            .addComponent(jTxt_itm_shade, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jTxt_itm_wash, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTxt_itm_price, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTxt_itm_name, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTxt_itm_warranty, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTxt_itm_finish, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTxt_itm_id, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-                            .addComponent(jCombo_itm_proName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel8))
+                                .addGap(9, 9, 9))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(7, 7, 7))
+                            .addComponent(jLabel9)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5))
+                                .addGap(7, 7, 7))
+                            .addComponent(jLabel10))
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jTxt_itm_finish, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTxt_itm_id, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                                    .addComponent(jCombo_itm_proName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jTxt_itm_shade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTxt_itm_warranty, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSpinner_itm_wash, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -117,41 +216,42 @@ public class ItemForm extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCombo_itm_proName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(37, 37, 37)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTxt_itm_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                    .addComponent(jTxt_itm_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(46, 46, 46)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTxt_itm_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTxt_itm_wash, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jSpinner_itm_wash, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
+                        .addComponent(jTxt_itm_finish, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jTxt_itm_finish, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTxt_itm_shade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTxt_itm_warranty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel10)
-                    .addComponent(jTxt_itm_shade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(116, Short.MAX_VALUE))
+                    .addComponent(jTxt_itm_warranty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_item_details.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Item ID", "ProductName", "Item Name", "Price", "Washability", "Finish", "Warranty", "ShadeRange"
+                "Item ID", "ProductName", "Item Name", "Price", "Washability", "Finish", "ShadeRange", "Warranty"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -162,7 +262,12 @@ public class ItemForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jTable_item_details.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_item_detailsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable_item_details);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -252,7 +357,7 @@ public class ItemForm extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -264,12 +369,12 @@ public class ItemForm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
+                        .addGap(27, 27, 27)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(158, 158, 158)
                         .addComponent(jLabel1)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,6 +424,40 @@ public class ItemForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_item_edit_btnActionPerformed
 
+    private void jCombo_itm_proNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCombo_itm_proNameActionPerformed
+       
+         // load product
+      try {         
+       st = connection.createStatement();
+          ResultSet rs = st.executeQuery("SELECT * FROM product");
+          Vector v = new Vector();
+          
+          while (rs.next()) {              
+              v.add(rs.getString("name"));
+              
+              DefaultComboBoxModel com = new DefaultComboBoxModel(v);
+              jCombo_itm_proName.setModel(com);              
+          }        
+      } catch (SQLException e) {
+            System.out.println(e);
+      }                                
+    }//GEN-LAST:event_jCombo_itm_proNameActionPerformed
+
+    private void jTable_item_detailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_item_detailsMouseClicked
+        // Get The Index Of The Slected Row 
+        int i = jTable_item_details.getSelectedRow();
+
+        TableModel model = jTable_item_details.getModel();
+
+        // Display Slected Row In JTexteFields
+        jTxt_itm_id.setText(model.getValueAt(i, 0).toString());
+        jTxt_pName.setText(model.getValueAt(i, 1).toString());
+
+        jTxt_pDes.setText(model.getValueAt(i, 2).toString());
+
+        jCombo_pApply.setSelectedItem(model.getValueAt(i, 3).toString());
+    }//GEN-LAST:event_jTable_item_detailsMouseClicked
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -347,13 +486,13 @@ public class ItemForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JSpinner jSpinner_itm_wash;
+    private javax.swing.JTable jTable_item_details;
     private javax.swing.JTextField jTxt_itm_finish;
     private javax.swing.JTextField jTxt_itm_id;
     private javax.swing.JTextField jTxt_itm_name;
     private javax.swing.JTextField jTxt_itm_price;
     private javax.swing.JTextField jTxt_itm_shade;
     private javax.swing.JTextField jTxt_itm_warranty;
-    private javax.swing.JTextField jTxt_itm_wash;
     // End of variables declaration//GEN-END:variables
 }

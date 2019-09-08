@@ -8,18 +8,16 @@ public class Item {
     private int priceRange;
     private String finish;
     private int washability;
-    private String coverage;
     private String shadeRange;
     private String warranty;
 
-    public Item(int itemId, String productName, String itemName, int priceRange, String finish, int washability, String coverage, String shadeRange, String warranty) {
+    public Item(int itemId, String productName, String itemName, int priceRange, String finish, int washability, String shadeRange, String warranty) {
         this.itemId = itemId;
         this.productName = productName;
         this.itemName = itemName;
         this.priceRange = priceRange;
         this.finish = finish;
         this.washability = washability;
-        this.coverage = coverage;
         this.shadeRange = shadeRange;
         this.warranty = warranty;
     }
@@ -46,10 +44,6 @@ public class Item {
 
     public int getWashability() {
         return washability;
-    }
-
-    public String getCoverage() {
-        return coverage;
     }
 
     public String getShadeRange() {
