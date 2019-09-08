@@ -1,10 +1,6 @@
 
 package com.asianpaint.stocks;
 
-/**
- *
- * @author Mathuragini
- */
 public class Product {
 
     //Varaiables

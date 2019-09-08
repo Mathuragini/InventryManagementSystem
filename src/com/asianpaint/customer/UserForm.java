@@ -21,6 +21,7 @@ public class UserForm extends javax.swing.JFrame {
 
     public UserForm() {
         initComponents();
+        this.setExtendedState(UserForm.MAXIMIZED_BOTH);
         Show_User_In_JTable();
     }
 

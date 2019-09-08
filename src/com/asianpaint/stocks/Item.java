@@ -1,13 +1,9 @@
 package com.asianpaint.stocks;
 
-/**
- *
- * @author Mathuragini
- */
 public class Item {
 
     private int itemId;
-    private int productId;
+    private String productName;
     private String itemName;
     private int priceRange;
     private String finish;
@@ -16,9 +12,9 @@ public class Item {
     private String shadeRange;
     private String warranty;
 
-    public Item(int itemId, int productId, String itemName, int priceRange, String finish, int washability, String coverage, String shadeRange, String warranty) {
+    public Item(int itemId, String productName, String itemName, int priceRange, String finish, int washability, String coverage, String shadeRange, String warranty) {
         this.itemId = itemId;
-        this.productId = productId;
+        this.productName = productName;
         this.itemName = itemName;
         this.priceRange = priceRange;
         this.finish = finish;
@@ -32,8 +28,8 @@ public class Item {
         return itemId;
     }
 
-    public int getProductId() {
-        return productId;
+    public String getProductName() {
+        return productName;
     }
 
     public String getItemName() {

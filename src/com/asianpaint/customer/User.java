@@ -1,11 +1,7 @@
 package com.asianpaint.customer;
-
-/**
- *
- * @author Mathuragini
- */
 public class User {
-
+ 
+    //Declare varaiables for User class
     private int userId;
     private String username;
     private String password;
@@ -13,6 +9,7 @@ public class User {
     private int tp;
     private String role;
 
+     //Create parametrized constructor for User class
     public User(int userId, String username, String password, String mail, int tp, String role) {
         this.userId = userId;
         this.username = username;
@@ -22,6 +19,7 @@ public class User {
         this.role = role;
     }
 
+    //Generate getters for the User class varaiables
     public int getUserId() {
         return userId;
     }

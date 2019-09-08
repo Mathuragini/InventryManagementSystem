@@ -1,9 +1,4 @@
 package com.asianpaint.customer;
-
-/**
- *
- * @author Mathuragini
- */
 public class Customer {
 
     //Declare varaiables for customer class

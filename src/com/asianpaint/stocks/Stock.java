@@ -2,22 +2,18 @@ package com.asianpaint.stocks;
 
 import java.sql.Date;
 
-/**
- *
- * @author Mathuragini
- */
 public class Stock {
 
     private int stockId;
     private String type;
-    private int itemId;
+    private String itemName;
     private int Qty;
     private Date updatedDate;
 
-    public Stock(int stockId, String type, int itemId, int Qty, Date updatedDate) {
+    public Stock(int stockId, String type, String itemName, int Qty, Date updatedDate) {
         this.stockId = stockId;
         this.type = type;
-        this.itemId = itemId;
+        this.itemName = itemName;
         this.Qty = Qty;
         this.updatedDate = updatedDate;
     }
@@ -30,8 +26,8 @@ public class Stock {
         return type;
     }
 
-    public int getItemId() {
-        return itemId;
+    public String getItemName() {
+        return itemName;
     }
 
     public int getQty() {
@@ -41,5 +37,7 @@ public class Stock {
     public Date getUpdatedDate() {
         return updatedDate;
     }
+
+    
 
 }
